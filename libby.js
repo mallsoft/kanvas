@@ -1,20 +1,21 @@
 // canvas helper class
-class Scene {
-    constructor(w,h){
+class Kanvas {
+    constructor(w,h,parentContainer){
         //setup the canvas
         this.canvas = document.createElement('canvas')
         this.canvas.style.display = 'block'
 
         this.ctx = this.canvas.getContext('2d')
-    
-        //offscreen
-        this.osCanvas = document.createElement('canvas')
-        this.osCtx = this.osCanvas.getContext('2d')
 
-        document.body.appendChild(this.canvas)
+        let parent = document.querySelector(parentContainer) 
+        || document.body
 
-        this.width = w || 640
-        this.height = h || 480
+        if(parent instanceof Element  || parent instanceof HTMLDocument){
+            parent.appendChild(this.canvas)
+        } else {
+            document.body.appendChild(this.canvas)
+        }
+
         this.setSize(this.width,this.height)
     }
     setSize(w,h){
@@ -22,9 +23,6 @@ class Scene {
         
         this.canvas.width = w
         this.canvas.height = h
-        
-        this.osCanvas.width = w
-        this.osCanvas.height = h
 
         this.width = w
         this.height = h
@@ -34,11 +32,7 @@ class Scene {
 
     fitWindow() {
         //fits the window , and sets the offscreen to the same size
-        let w = window.innerWidth 
-        let h = window.innerHeight
-
-        this.setSize(w,h)
-
+        this.setSize(window.innerWidth,window.innerHeight)
         return this
     }
     fitParent(){
@@ -46,18 +40,7 @@ class Scene {
     }
 
     clearAll(){
-        this.ctx.clearRect(0,0,window.innerWidth,window.innerHeight)
-        this.osCtx.clearRect(0,0,window.innerWidth,window.innerHeight)
-        return this
-    }
-
-    fromOffscreen(){
-        //draws the contents of the offscreen canvas onto the main canvas
-        this.ctx.drawImage(this.osCanvas,0,0)
-        return this
-    }
-    toOffscreen(){
-        this.osCtx.drawImage(this.canvas,0,0)
+        this.ctx.clearRect(0,0,this.w,this.h)
         return this
     }
 
@@ -79,11 +62,8 @@ class Scene {
         }
     }
 
-    static reset(ctx){
-        ctx.canvas.width = ctx.canvas.width
-    }
-    static hardClear(ctx){
-        ctx.putImageData(new ImageData(ctx.canvas.width,ctx.canvas.height),0,0)
+    static clearContext(ctx){
+        ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height)
     }
 }
 
