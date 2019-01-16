@@ -1,3 +1,7 @@
+/**
+ * @version 0.1
+ */
+
 // canvas helper class
 class Kanvas {
     constructor(parentContainer,w,h){
@@ -175,10 +179,7 @@ class Vector{
     }
 
     heading(){
-        let h = {};
-        h.rad = Math.atan2(this.y,this.x)
-        h.deg = (h.rad * radToDeg) //+ (180 % 360)  -> gives 360 instead of +-180
-        return h
+        return Math.atan2(this.y,this.x)
     }
 
     setHeading(rad){
@@ -243,4 +244,25 @@ class Rectangle{
         ctx.lineWidth = lineWidth
         ctx.strokeRect(this.x,this.y,this.w,this.h)
     }
+}
+
+class MouseEvent{
+    constructor(){
+        this.isMoving = false;
+        this.x = 0;
+        this.y = 0;
+
+        window.addEventListener('mousemove',e=>{
+            this.x = e.clientX
+            this.y = e.clientY
+            this.isMoving = true
+            
+            clearTimeout(this._timer)
+            this._timer = setTimeout(()=>{
+                this.isMoving = false
+            }, 100)
+        })
+        this._timer;
+    }
+
 }
