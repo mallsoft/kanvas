@@ -11,10 +11,14 @@ class Kanvas {
         this.canvas.className = this.constructor.name
         this.ctx = this.canvas.getContext('2d')
 
-        let parent = document.querySelector(parentContainer)
+        this.parentContainer = 
+        document.querySelector(parentContainer) || document.body
         
-        if(parent instanceof Element  || parent instanceof HTMLDocument){
-            parent.appendChild(this.canvas)
+        if(this.parentContainer instanceof Element  
+            || this.parentContainer instanceof HTMLDocument){
+
+            this.parentContainer.appendChild(this.canvas)
+
         } else {
             document.body.appendChild(this.canvas)
         }
@@ -35,11 +39,11 @@ class Kanvas {
 
     fitWindow() {
         //fits the window , and sets the offscreen to the same size
-        this.setSize(window.innerWidth,window.innerHeight)
-        return this
+        return this.setSize(window.innerWidth,window.innerHeight)
     }
     fitParent(){
-        throw 'fitParent() not implemented'
+        let p = this.parentContainer.getBoundingClientRect()
+        return this.setSize(p.width,p.height)
     }
 
     clear(){
