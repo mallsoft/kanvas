@@ -265,4 +265,7 @@ class MouseEvent{
         this._timer;
     }
 
+    toVector(){
+        return new Vector(this.x,this.y)
+    }
 }
