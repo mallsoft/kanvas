@@ -1,31 +1,30 @@
 // canvas helper class
 class Kanvas {
-    constructor(w,h,parentContainer){
+    constructor(parentContainer,w,h){
         //setup the canvas
         this.canvas = document.createElement('canvas')
         this.canvas.style.display = 'block'
-
+        this.canvas.className = this.constructor.name
         this.ctx = this.canvas.getContext('2d')
 
-        let parent = document.querySelector(parentContainer) 
-        || document.body
-
+        let parent = document.querySelector(parentContainer)
+        
         if(parent instanceof Element  || parent instanceof HTMLDocument){
             parent.appendChild(this.canvas)
         } else {
             document.body.appendChild(this.canvas)
         }
+        
+        this.width = w || 640
+        this.height = h || 480
 
         this.setSize(this.width,this.height)
     }
     setSize(w,h){
-        if(arguments.length !== 2) throw 'FRAME.setSize() -> Both Width and Height must be supplied'
-        
-        this.canvas.width = w
-        this.canvas.height = h
+        if(arguments.length !== 2) throw '.setSize() -> Both Width and Height must be supplied'
 
-        this.width = w
-        this.height = h
+        this.canvas.width = this.width = w
+        this.canvas.height = this.height = h
 
         return this
     }
@@ -39,11 +38,12 @@ class Kanvas {
         throw 'fitParent() not implemented'
     }
 
-    clearAll(){
-        this.ctx.clearRect(0,0,this.w,this.h)
+    clear(){
+        this.ctx.clearRect(0,0,this.width,this.height)
         return this
     }
 
+    //hide show the vanilla cursor ...so you can add your own!
     hidePointer(){
         this.canvas.style.cursor = 'none'
         return this
@@ -53,31 +53,22 @@ class Kanvas {
         return this
     }
 
-    static multiline(ctx,x,y,textArr,spacing){
-        // "multiline ctx text"
+    static arrText(textArr,x,y,context){
+        //multiline text
+        let fontSize = context.font.split('px')[0]
+
         for (let i = 0; i < textArr.length; i++) {
-            ctx.fillText(textArr[i],x,(y+(
-                spacing ? spacing : 10
+            context.fillText(textArr[i],x,(y+(
+                fontSize
             )*i))
         }
     }
+
 
     static clearContext(ctx){
         ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height)
     }
 }
-
-
-
-
-
-//constants
-const radToDeg = 180.0 / Math.PI
-
-const degToRad = Math.PI / 180.0
-
-const twoPI = Math.PI * 2
-
 
 //math helpers "quikk mafs"
 const mafs = {
@@ -88,7 +79,7 @@ const mafs = {
         return  Math.floor(Math.random()*(max-min+1)+min)
     },
 
-    randPosNeg() { // 1 or -1 random gen
+    randPosNeg() { //gives 1 or -1
         return Math.random() > .5 ? 1 : -1;
     },
 
@@ -111,6 +102,9 @@ const mafs = {
     },
 
     distance(x1,y1,x2,y2) {
+        if(arguments.length === 2 && arguments[0].x){
+            return this.distanceObj(arguments[0],arguments[1])
+        }
         return Math.hypot(x1-x2,y1-y2)
     },
     
@@ -131,8 +125,6 @@ const mafs = {
     },
 }
 
-
-//simple? vector class
 class Vector{
     constructor(x,y){
         this.x = x || 0
@@ -213,10 +205,14 @@ class Vector{
         return Math.sqrt(this.x*this.x + this.y*this.y)
     }
 
-    random(){ // this is probably not actually "random.."
+    random(){
         this.x = Math.random() * 2 - 1
         this.y = Math.random() * 2 - 1
         return this
+    }
+
+    distanceTo(vec){
+        return Math.hypot(this.x-vec.x,this.y-vec.y)
     }
 
     stop(){
@@ -238,8 +234,13 @@ class Rectangle{
     }
     centre(){
         return {
-            x : this.x + this.w*.5,
-            y : this.y + this.h *.5
+            x : this.x + this.w * .5,
+            y : this.y + this.h * .5
             }
+    }
+    drawOutline(ctx,lineWidth,color){
+        ctx.strokeStyle = color
+        ctx.lineWidth = lineWidth
+        ctx.strokeRect(this.x,this.y,this.w,this.h)
     }
 }
