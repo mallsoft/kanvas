@@ -1,5 +1,5 @@
 /**
- * @version 0.1
+ * @version 0.2
  */
 
 // canvas helper class
@@ -29,7 +29,7 @@ class Kanvas {
         this.setSize(this.width,this.height)
     }
     setSize(w,h){
-        if(arguments.length !== 2) throw '.setSize() -> Both Width and Height must be supplied'
+        if(arguments.length !== 2) throw '.setSize() -> both Width and Height must be supplied'
 
         this.canvas.width = this.width = w
         this.canvas.height = this.height = h
@@ -104,8 +104,8 @@ const mafs = {
         let a = 0, b = 0
         while(a === 0) a = Math.random()
         while(b === 0) b = Math.random()
-        let n = Math.sqrt(-2 * Math.log( a )) * Math.cos(twoPI * b)
-        if ( n > 1 || n < 0 ) return rand_BM()
+        let n = Math.sqrt(-2 * Math.log( a )) * Math.cos((Math.PI*2) * b)
+        if ( n > 1 || n < 0 ) return this.rand_BM()
         return n
     },
 
@@ -195,10 +195,12 @@ class Vector{
     }
 
     rotate(rad){
+        let mag = this.mag()
         let cos = Math.cos(rad)
         let sin = Math.sin(rad)
         this.x = (this.x * cos - this.y * sin)
         this.y = (this.x * sin + this.y * cos)
+        this.normalize().scale(mag)
         return this
     }
 
@@ -220,7 +222,12 @@ class Vector{
         return Math.hypot(this.x-vec.x,this.y-vec.y)
     }
 
-    stop(){
+    angleTo(vec){
+        // Math.atan2(o1.y-o2.y,o1.x-o2.x)
+        return Math.atan2(vec.y-this.y,vec.x-this.x)
+    }
+
+    clear(){
         this.x = 0
         this.y = 0
         return this
