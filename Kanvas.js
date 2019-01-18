@@ -11,8 +11,8 @@ class Kanvas {
         this.canvas.className = this.constructor.name
         this.ctx = this.canvas.getContext('2d')
 
-        this.parentContainer = 
-        document.querySelector(parentContainer) || document.body
+        this.parentContainer = document.querySelector(parentContainer) 
+            || document.body
         
         if(this.parentContainer instanceof Element  
             || this.parentContainer instanceof HTMLDocument){
