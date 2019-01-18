@@ -257,17 +257,17 @@ class Rectangle{
     }
 }
 
-class MouseEvent{
+class MouseEvent extends Vector{
     constructor(){
+        super(0,0)
         this.isMoving = false;
-        this.x = 0;
-        this.y = 0;
 
         window.addEventListener('mousemove',e=>{
             this.x = e.clientX
             this.y = e.clientY
             this.isMoving = true
             
+            // replace with frame count, or deltaTime?
             clearTimeout(this._timer)
             this._timer = setTimeout(()=>{
                 this.isMoving = false
@@ -276,7 +276,4 @@ class MouseEvent{
         this._timer;
     }
 
-    toVector(){
-        return new Vector(this.x,this.y)
-    }
 }
