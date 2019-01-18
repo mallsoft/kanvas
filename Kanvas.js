@@ -272,45 +272,44 @@ class Rectangle{
 class MouseEvent extends Vector{
     constructor(){
         super(0,0)
-        this.isMoving = false;
-        this.speed = 0
 
-        window.addEventListener('mouseenter', e=>{
-            console.log('ffs')
-        })
         window.addEventListener('mousemove', e=> {
             this.x = e.clientX
             this.y = e.clientY
-            this.isMoving = true
             
-            clearTimeout(this._timer)
-            this._timer = setTimeout(()=>{
-                this.isMoving = false
-                this._historic.maxSpeed = 0
-            }, 100)
+            
+            // clearTimeout(this._timer)
+            // this._timer = setTimeout(()=>{
+            //     this.isMoving = false
+            //     this._historic.max_speed = 0
+            // }, 100)
         })
         this._timer;
 
         this._historic = {
             pos: this.copy(),
             time: null,
-            maxSpeed: 0
         }
     }
 
-    time(t){
+    update(t){
         //the distance of travel since last call
         const dist = this._historic.pos.distanceTo(this)
 
         //the delta time (now / then)
         const delta = t / this._historic.time
 
-        //calculate the speed
-        this.speed = dist * Math.min(delta, 1)
-        if (this.speed > this._historic.maxSpeed) this._historic.maxSpeed = this.speed
+        //calculate the _speed
+        this._speed = dist * Math.min(delta, 1)
+        this.moveTimer = this._speed > 0 ? this.moveTimer+1 : 0 
+
         //set new historic values
         this._historic.time = t
         this._historic.pos = this.copy()
+    }
+
+    get speed(){
+        return this.moveTimer > 1 ? this._speed : 0
     }
 
 } 
