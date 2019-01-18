@@ -81,13 +81,12 @@ class Kanvas {
 //math helpers "quikk mafs"
 const mafs = {
     randomRange(a,b){ // inclusive (a -> b)
-        if(!(a || b)) throw 'REEE wrong in randomRange()'
         const max = Math.max(a,b || 0)
         const min = Math.min(a,b || 0)
         return  Math.floor(Math.random()*(max-min+1)+min)
     },
 
-    randPosNeg() { //gives 1 or -1
+    flip() { //gives 1 or -1
         return Math.random() > .5 ? 1 : -1;
     },
 
@@ -241,6 +240,7 @@ class Rectangle{
         this.w = w
         this.h = h
     }
+
     isInside(x,y){
         return (
             x > this.x 
@@ -249,16 +249,23 @@ class Rectangle{
             && y < this.y + this.h
             )
     }
+
     centre(){
         return {
             x : this.x + this.w * .5,
             y : this.y + this.h * .5
             }
     }
+
     drawOutline(ctx,lineWidth,color){
         ctx.strokeStyle = color
         ctx.lineWidth = lineWidth
         ctx.strokeRect(this.x,this.y,this.w,this.h)
+    }
+
+    drawFill(ctx,fill){
+        ctx.fillStyle = fill
+        ctx.fillRect(this.x,this.y,this.w,this.h)
     }
 }
 
@@ -266,19 +273,44 @@ class MouseEvent extends Vector{
     constructor(){
         super(0,0)
         this.isMoving = false;
+        this.speed = 0
 
-        window.addEventListener('mousemove',e=>{
+        window.addEventListener('mouseenter', e=>{
+            console.log('ffs')
+        })
+        window.addEventListener('mousemove', e=> {
             this.x = e.clientX
             this.y = e.clientY
             this.isMoving = true
             
-            // replace with frame count, or deltaTime?
             clearTimeout(this._timer)
             this._timer = setTimeout(()=>{
                 this.isMoving = false
+                this._historic.maxSpeed = 0
             }, 100)
         })
         this._timer;
+
+        this._historic = {
+            pos: this.copy(),
+            time: null,
+            maxSpeed: 0
+        }
     }
 
-}
+    time(t){
+        //the distance of travel since last call
+        const dist = this._historic.pos.distanceTo(this)
+
+        //the delta time (now / then)
+        const delta = t / this._historic.time
+
+        //calculate the speed
+        this.speed = dist * Math.min(delta, 1)
+        if (this.speed > this._historic.maxSpeed) this._historic.maxSpeed = this.speed
+        //set new historic values
+        this._historic.time = t
+        this._historic.pos = this.copy()
+    }
+
+} 
