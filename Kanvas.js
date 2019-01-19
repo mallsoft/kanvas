@@ -138,6 +138,10 @@ class Vector{
         this.y = y || 0
         return this
     }
+    
+    toString(){
+        return `vX = ${this.y}  vY = ${this.x}`
+    }
 
     copy(){
         return new Vector(this.x,this.y)
@@ -272,19 +276,11 @@ class Rectangle{
 class MouseEvent extends Vector{
     constructor(){
         super(0,0)
-
+        
         window.addEventListener('mousemove', e=> {
             this.x = e.clientX
             this.y = e.clientY
-            
-            
-            // clearTimeout(this._timer)
-            // this._timer = setTimeout(()=>{
-            //     this.isMoving = false
-            //     this._historic.max_speed = 0
-            // }, 100)
         })
-        this._timer;
 
         this._historic = {
             pos: this.copy(),
@@ -312,4 +308,33 @@ class MouseEvent extends Vector{
         return this.moveTimer > 1 ? this._speed : 0
     }
 
+    get vector(){
+        let r = this._historic.pos.angleTo(this)
+        let x = Math.cos(r) * this.speed
+        let y = Math.sin(r) * this.speed
+        return new Vector(x,y)
+    }
+
 } 
+
+/**
+ * TODO ?
+ * - convert to a sensible color format ... hsla? / rgba
+ * - change color (set)
+ * - change hue
+ * - saturation
+ * - brightness
+ * 
+ * - random color
+ * - invert?
+ * 
+ */
+class Color{
+    constructor(color){
+        this.color = color
+    }
+    get color(){
+
+    }
+
+}
