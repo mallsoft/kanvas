@@ -327,7 +327,7 @@ class MouseEvent extends Vector{
         const delta = t - this._historic.time
 
         //calculate the _speed
-        this._speed = dist * Math.min(delta, 1)
+        this._speed = dist * delta
         this.moveTimer = this._speed > 0 ? this.moveTimer+1 : 0 
 
         //set new historic values
@@ -341,10 +341,11 @@ class MouseEvent extends Vector{
 
     get vector(){
         let r = this._historic.pos.angleTo(this)
-        let mag = this.speed
-        let x = Math.cos(r) * mag * 10
-        let y = Math.sin(r) * mag * 10
-        return new Vector(x,y)
+        let mag = this.copy().sub(this._historic.pos).mag()
+        return new Vector(
+            Math.cos(r) * mag,
+            Math.sin(r) * mag
+            )
     }
 
 } 
