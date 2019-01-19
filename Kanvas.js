@@ -90,7 +90,7 @@ const mafs = {
         return Math.random() > .5 ? 1 : -1;
     },
 
-    rand_CL(samples) { // Central Limit Theorem...
+    rand_CL(samples) { // Central Limit
         let s = samples || 3;
         let sum = 0
         for (let i = 0; i < s; i++) {
@@ -99,7 +99,7 @@ const mafs = {
         return (sum / s)
     },
 
-    rand_BM() { // box muller transform...
+    rand_BM() { // box muller
         let a = 0, b = 0
         while(a === 0) a = Math.random()
         while(b === 0) b = Math.random()
@@ -113,6 +113,10 @@ const mafs = {
             return this.distanceObj(arguments[0],arguments[1])
         }
         return Math.hypot(x1-x2,y1-y2)
+    },
+
+    manhattan(x,y,x2,y2){
+        return Math.abs((x-x2) + (y-y2))
     },
     
     distanceObj(o1,o2) {
@@ -273,6 +277,23 @@ class Rectangle{
     }
 }
 
+class Circle{
+    constructor(x,y,radius){
+        this.radius = radius
+        this.x = x
+        this.y = y
+    }
+    isInside(x,y){
+        return this.radius > mafs.distance(this.x,this.y,x,y)
+    }
+    drawOutline(ctx,strokeStyle){
+        ctx.strokeStyle = strokeStyle
+        ctx.beginPath()
+        ctx.arc(this.x,this.y,this.radius,0,Math.PI * 2)
+        ctx.stroke()
+    }
+}
+
 class MouseEvent extends Vector{
     constructor(){
         super(0,0)
@@ -310,8 +331,9 @@ class MouseEvent extends Vector{
 
     get vector(){
         let r = this._historic.pos.angleTo(this)
-        let x = Math.cos(r) * this.speed
-        let y = Math.sin(r) * this.speed
+        let mag = this.speed
+        let x = Math.cos(r) * mag
+        let y = Math.sin(r) * mag
         return new Vector(x,y)
     }
 
@@ -319,7 +341,6 @@ class MouseEvent extends Vector{
 
 /**
  * TODO ?
- * - convert to a sensible color format ... hsla? / rgba
  * - change color (set)
  * - change hue
  * - saturation
