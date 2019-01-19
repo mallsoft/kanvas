@@ -61,6 +61,13 @@ class Kanvas {
         return this
     }
 
+    fps(timeStamp){
+        let dt = timeStamp - this._historicTime
+        this._historicTime = timeStamp
+                
+        return Math.floor(1000 / dt) || 0
+    }
+
     static arrText(textArr,x,y,context){
         //multiline text
         let fontSize = context.font.split('px')[0]
@@ -283,9 +290,11 @@ class Circle{
         this.x = x
         this.y = y
     }
+
     isInside(x,y){
         return this.radius > mafs.distance(this.x,this.y,x,y)
     }
+
     drawOutline(ctx,strokeStyle){
         ctx.strokeStyle = strokeStyle
         ctx.beginPath()
