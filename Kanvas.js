@@ -322,8 +322,9 @@ class MouseEvent extends Vector{
         //the distance of travel since last call
         const dist = this._historic.pos.distanceTo(this)
 
-        //the delta time (now / then)
-        const delta = t / this._historic.time
+        //the delta time (now - then)
+        //how much time sinc last call
+        const delta = t - this._historic.time
 
         //calculate the _speed
         this._speed = dist * Math.min(delta, 1)
@@ -341,8 +342,8 @@ class MouseEvent extends Vector{
     get vector(){
         let r = this._historic.pos.angleTo(this)
         let mag = this.speed
-        let x = Math.cos(r) * mag
-        let y = Math.sin(r) * mag
+        let x = Math.cos(r) * mag * 10
+        let y = Math.sin(r) * mag * 10
         return new Vector(x,y)
     }
 
