@@ -362,11 +362,54 @@ class MouseEvent extends Vector{
  * 
  */
 class Color{
-    constructor(color){
-        this.color = color
+    constructor(colorHsla){
+        this._color = colorHsla
     }
+    
+    copy(){
+        return new Color(this._color)
+    }
+
     get color(){
-
+        let h = this._color.h,
+        s = this._color.s,
+        l = this._color.l,
+        a = this._color.a
+        return `hsla(${h},${s}%,${l}%,${a})`
     }
 
+    get hue(){
+        return this._color.h
+    }
+    get saturation(){
+        return this._color.s
+    }
+    get lightness(){
+        return this._color.l
+    }
+    get alpha(){
+        return this._color.a
+    }
+
+    set color(colorHsla){
+        //add a check?
+        this._color = colorHsla
+    }
+
+    set hue(h){
+        //0 - 360
+        this._color.h = h
+    }
+    set saturation(s){
+        //0 - 100% ...0 = no color (grayscale)
+        this._color.s = s
+    }
+    set lightness(l){
+        //0 - 100% ..0 = black
+        this._color.l = l
+    }
+    set alpha(a){
+        // 0.0 - 1.0 ...0 = opaque
+        this._color.a = a
+    }
 }
