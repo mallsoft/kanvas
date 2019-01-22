@@ -5,9 +5,9 @@
 
 /**
  * canvas helper class
- * @param parentContainer html element, default is document.body
- * @param w width of the canvas
- * @param h height of the canvas
+ * @param {Element} parentContainer html element, default is document.body
+ * @param {number} w width of the canvas
+ * @param {number} h height of the canvas
  */
 class Kanvas {
     constructor(parentContainer,w,h){
@@ -52,21 +52,33 @@ class Kanvas {
         return this.setSize(p.width,p.height)
     }
 
+    /**
+     * Clears the canvas context
+     */
     clear(){
         this.ctx.clearRect(0,0,this.width,this.height)
         return this
     }
 
-    //hide show the vanilla cursor ...so you can add your own!
+    /**
+     * Hide the pointer
+     */
     hidePointer(){
         this.canvas.style.cursor = 'none'
         return this
     }
+    /**
+     * Show the pointer
+     */
     showPointer(){
         this.canvas.style.removeProperty('cursor')
         return this
     }
 
+    /**
+     * @param timeStamp 
+     * @returns an aproximation of frames per second
+     */
     fps(timeStamp){
         let dt = timeStamp - this._historicTime
         this._historicTime = timeStamp
@@ -74,8 +86,14 @@ class Kanvas {
         return Math.floor(1000 / dt) || 0
     }
 
+    /**
+     * multiline text
+     * @param {array} textArr 
+     * @param {number} x 
+     * @param {number} y 
+     * @param context 
+     */
     static arrText(textArr,x,y,context){
-        //multiline text
         let fontSize = context.font.split('px')[0]
 
         for (let i = 0; i < textArr.length; i++) {
@@ -85,7 +103,10 @@ class Kanvas {
         }
     }
 
-
+    /**
+     * Clear a spesific ctx
+     * @param {ctx} ctx 
+     */
     static clearContext(ctx){
         ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height)
     }
