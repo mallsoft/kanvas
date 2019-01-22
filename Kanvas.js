@@ -351,65 +351,82 @@ class MouseEvent extends Vector{
 } 
 
 /**
- * TODO ?
- * - change color (set)
- * - change hue
- * - saturation
- * - brightness
- * 
- * - random color
- * - invert?
- * 
+ * @param colorHsla hsla object {h: 0-360, s: 0-100...a: 0.0-1.0}
  */
 class Color{
     constructor(colorHsla){
-        this._color = colorHsla
+        let c = colorHsla || {h:0,s:0,l:0,a:1} //or black
+        this.h = c.h
+        this.s = c.s
+        this.l = c.l
+        this.a = c.a 
     }
     
     copy(){
-        return new Color(this._color)
+        return new Color(this)
     }
 
-    get color(){
-        let h = this._color.h,
-        s = this._color.s,
-        l = this._color.l,
-        a = this._color.a
-        return `hsla(${h},${s}%,${l}%,${a})`
+    /**
+     * returns the color in a hsla() string 
+     */
+    toString(){
+        return `hsla(${this.h},${this.s}%,${this.l}%,${this.a})`
+    }
+
+    /**
+     * randomizes all color values including alpha
+     */
+    randomize(){
+        let r = mafs.randomRange
+        this.h = r(360)
+        this.s = r(100)
+        this.l = r(100)
+        this.a = r(1000) / 1000
+        return this
     }
 
     get hue(){
-        return this._color.h
+        return this.h
     }
     get saturation(){
-        return this._color.s
+        return this.s
     }
     get lightness(){
-        return this._color.l
+        return this.l
     }
     get alpha(){
-        return this._color.a
+        return this.a
     }
 
-    set color(colorHsla){
-        //add a check?
-        this._color = colorHsla
-    }
-
+    /**
+     * @param hue 0 - 360 deg
+     */
     set hue(h){
-        //0 - 360
-        this._color.h = h
+        // color in a 360 deg circle
+        this.h = h
     }
+    
+    /**
+     * @param s saturation 0-100 %
+     */
     set saturation(s){
         //0 - 100% ...0 = no color (grayscale)
-        this._color.s = s
+        this.s = s
     }
+
+    /**
+     * @param l lightness 0 - 100%
+     */
     set lightness(l){
         //0 - 100% ..0 = black
-        this._color.l = l
+        this.l = l
     }
+
+    /**
+     * @param a alpha 0.0 - 1.0
+     */
     set alpha(a){
         // 0.0 - 1.0 ...0 = opaque
-        this._color.a = a
+        this.a = a
     }
 }
