@@ -2,7 +2,13 @@
  * @version 0.2
  */
 
-// canvas helper class
+
+/**
+ * canvas helper class
+ * @param parentContainer html element, default is document.body
+ * @param w width of the canvas
+ * @param h height of the canvas
+ */
 class Kanvas {
     constructor(parentContainer,w,h){
         //setup the canvas
@@ -335,10 +341,16 @@ class MouseEvent extends Vector{
         this._historic.pos = this.copy()
     }
 
+    /**
+     * returns the 'speed'
+     */
     get speed(){
         return this.moveTimer > 1 ? this._speed : 0
     }
 
+    /**
+     * returns the speed and direction as a vector
+     */
     get vector(){
         let r = this._historic.pos.angleTo(this)
         let mag = this.copy().sub(this._historic.pos).mag()
