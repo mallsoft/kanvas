@@ -363,10 +363,11 @@ class MouseEvent extends Vector{
     }
 
     /**
-     * returns the 'speed'
+     * returns the 'speed' (some number based on the movement of the mouse position)
      */
     get speed(){
-        return this.moveTimer > 1 ? this._speed : 0
+        //wait two frames before actually starting 
+        return this.moveTimer > 2 ? this._speed : 0
     }
 
     /**
@@ -435,7 +436,6 @@ class Color{
      * @param hue 0 - 360 deg
      */
     set hue(h){
-        // color in a 360 deg circle
         this.h = h
     }
     
@@ -443,7 +443,6 @@ class Color{
      * @param s saturation 0-100 %
      */
     set saturation(s){
-        //0 - 100% ...0 = no color (grayscale)
         this.s = s
     }
 
@@ -451,7 +450,6 @@ class Color{
      * @param l lightness 0 - 100%
      */
     set lightness(l){
-        //0 - 100% ..0 = black
         this.l = l
     }
 
@@ -459,7 +457,6 @@ class Color{
      * @param a alpha 0.0 - 1.0
      */
     set alpha(a){
-        // 0.0 - 1.0 ...0 = opaque
         this.a = a
     }
 }
