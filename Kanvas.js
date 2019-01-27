@@ -34,6 +34,12 @@ class Kanvas {
 
         this.setSize(this.width,this.height)
     }
+
+    /**
+     * Set the dimension of the canvas
+     * @param {number} w width
+     * @param {number} h height
+     */
     setSize(w,h){
         if(arguments.length !== 2) throw '.setSize() -> both Width and Height must be supplied'
 
@@ -43,10 +49,18 @@ class Kanvas {
         return this
     }
 
+    /**
+     * Sets canvas dimensions to window dimensions
+     */
     fitWindow() {
         //fits the window , and sets the offscreen to the same size
         return this.setSize(window.innerWidth,window.innerHeight)
     }
+
+    /**
+     * Sets canvas dimensions to parent element dimensions
+     * - note, if the parent is automatically sized this will not work
+     */
     fitParent(){
         let p = this.parentContainer.getBoundingClientRect()
         return this.setSize(p.width,p.height)
