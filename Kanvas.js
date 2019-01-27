@@ -70,7 +70,7 @@ class Kanvas {
     /**
      * Show the pointer
      */
-    showPointer(){
+    showPointer(){ 
         this.canvas.style.removeProperty('cursor')
         return this
     }
@@ -211,6 +211,10 @@ class Vector{
         return this
     }
     
+    /**
+     * Adds one vector to another
+     * @param {Vector} vec 
+     */
     add(vec){
         this.x += vec.x
         this.y += vec.y
@@ -235,6 +239,10 @@ class Vector{
         return this
     }
 
+    /**
+     * Rotates a vector relative to the given radian
+     * @param {Radian} rad 
+     */
     rotate(rad){
         let mag = this.mag()
         let cos = Math.cos(rad)
@@ -245,14 +253,24 @@ class Vector{
         return this
     }
 
+    /**
+     * @return the dot product
+     * @param {Vector} vec 
+     */
     dot(vec){
         return (this.x * vec.x + this.y * vec.y)
     }
 
+    /**
+     * @return magnitude of vector
+     */
     mag(){
         return Math.sqrt(this.x*this.x + this.y*this.y)
     }
 
+    /**
+     * Gives a pseudorandom vector
+     */
     random(){
         this.x = Math.random() * 2 - 1
         this.y = Math.random() * 2 - 1
@@ -380,6 +398,10 @@ class MouseEvent extends Vector{
             Math.cos(r) * mag,
             Math.sin(r) * mag
             )
+    }
+
+    get isMoving(){
+        return (this.speed > 0)
     }
 
 } 
