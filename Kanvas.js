@@ -33,6 +33,9 @@ class Kanvas {
         this.height = h || 480
 
         this.setSize(this.width,this.height)
+
+        //monkeypatch - for clarity ofc.
+        this.ctx.clear = () => this.clear()
     }
 
     /**
